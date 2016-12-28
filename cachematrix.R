@@ -7,36 +7,37 @@
 ## My first function "makeCacheMatrix" takes matrix 'x' as input and creates a special
 ## matrix that can cache its inverse using lexical scoping in R 
 
-makeCacheMatrix <- function(x = matrix()) {
+makeCacheMatrix <- function(x=matrix()){
     Inv <- NULL
     set <- function(y){
         x <<- y
         Inv <<- NULL
-     }
+    }
     get <-function (){
         x
-     } 
+    } 
     setinv <- function(solve){
-       Inv <<- solve
-     }
+        Inv <<- solve
+    }
     getinv <- function(){
-       Inv
-     }
+        Inv
+    }
     list( set=set, get=get, setinv=setinv, getinv=getinv)
+    
 }
 
 
 ## My second function "cacheSolve" computes the inverse of x,a special matrix returned 
 ## with the first function. If the inverse already exists,function retrieves it.
 
-cacheSolve <- function(x, ...) {
-   Inv <- x$getinv()
-   if(!is.null(Inv)){
-      message("Getting cached data")
-      return(Inv)
-   }
-   data <- x$get()
-   Inv <- solve(data, ...)
-   x$setinv(Inv)
-   Inv        
+cacheSolve <- function (x, ...){
+    Inv <- x$getinv()
+    if(!is.null(Inv)){
+        message("Getting cached data")
+        return(Inv)
+    }
+    data <- x$get()
+    Inv <- solve(data, ...)
+    x$setinv(Inv)
+    Inv
 }
