@@ -8,20 +8,26 @@
 ## matrix that can cache its inverse using lexical scoping in R 
 
 makeCacheMatrix <- function(x=matrix()){
+    #set the inverse to null
     Inv <- NULL
+    #cache the matrix outside the environment
     set <- function(y){
         x <<- y
         Inv <<- NULL
     }
+    #get the matrix from cache
     get <-function (){
         x
     } 
+    #solve for the inverse and cache it outside the environment
     setinv <- function(solve){
         Inv <<- solve
     }
+    #get the inverse from cache
     getinv <- function(){
         Inv
     }
+    #setup the list of matrices to be returned from each function
     list( set=set, get=get, setinv=setinv, getinv=getinv)
     
 }
@@ -31,13 +37,21 @@ makeCacheMatrix <- function(x=matrix()){
 ## with the first function. If the inverse already exists,function retrieves it.
 
 cacheSolve <- function (x, ...){
+    #get inverse matrix from x
     Inv <- x$getinv()
+    
+    #if the matrix has been solved and has inverse will return as non-null
     if(!is.null(Inv)){
-        message("Getting cached data")
+        message("Getting cached matrix")
+        #returns the inverse
         return(Inv)
     }
+    #Otherwise the matrix is passed to vector
     data <- x$get()
+    #inverse is computed using "solve"
     Inv <- solve(data, ...)
+    #cache the matrix
     x$setinv(Inv)
+    #return the inverse
     Inv
 }
